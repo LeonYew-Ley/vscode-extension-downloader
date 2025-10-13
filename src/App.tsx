@@ -23,6 +23,8 @@ export default function App() {
   // 顶部导航链接
   const navLinks = [
     { name: "GitHub", url: "https://github.com/OldSaltFish/vscode-extension-downloader" },
+    { name: "知乎(顶部评论)", url: "https://zhuanlan.zhihu.com/p/26003070992" },
+    { name: "Bilibili", url: "https://www.bilibili.com/video/BV1erTvzoEgn" },
   ];
 
   // 执行搜索
@@ -82,25 +84,26 @@ export default function App() {
   return (
     <div class="min-h-screen flex flex-col bg-gray-50">
       {/* 顶部导航 */}
-      <header class="bg-white shadow-sm py-4 px-6 flex justify-between items-center">
-        <div class="flex space-x-4">
+      <header class="sticky top-0 z-1 bg-white shadow-sm py-2 px-6 flex justify-center items-center">
+        <div class="w-full justify-end relative flex max-w-6xl">
           {navLinks.map(link => (
             <a
               href={link.url}
               target="_blank"
-              class="text-blue-600 hover:text-blue-800 transition-colors"
+              class="py-2 px-2 text-black hover:text-blue-600 hover:bg-blue-300 bg-blue-200 transition-colors no-underline"
             >
               {link.name}
             </a>
           ))}
+          {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500">搜索中...</div>}
         </div>
 
-        {isSearching() && <div class="text-sm text-gray-500">搜索中...</div>}
+        
       </header>
 
       {/* 主要内容区 */}
       <main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div class="w-full max-w-2xl transition-all duration-300">
+        <div class="sticky top-72px w-full max-w-2xl transition-all duration-300">
           <SearchBox
             query={query()}
             onInput={setQuery}
@@ -111,7 +114,7 @@ export default function App() {
 
         {/* 搜索结果列表 */}
         {results().length > 0 && (
-          <div class="w-full max-w-4xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <For each={results()}>
               {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
             </For>

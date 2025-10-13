@@ -1,9 +1,8 @@
 import { createSignal, Show } from "solid-js";
-import { ExtensionItem } from "../types/extensionItem";
+import { ExtensionItem, Version } from "../types/extensionItem";
 import { execDownload } from "../utils";
 import { createEffect } from "solid-js";
 import { downloadTarget, setDownloadTarget } from "../store";
-
 // 外部传递ID进行查询，并选择，最终将选择的版本返回给调用者
 
 async function fetchExtensionVersions(id: string = "WallabyJs.console-ninja") {
@@ -35,27 +34,61 @@ async function fetchExtensionVersions(id: string = "WallabyJs.console-ninja") {
         const result = await response.json();
         const tempSet = new Set<string>();
         const extensionData: ExtensionItem = result.results[0].extensions[0];
-        extensionData.versions.forEach(item => {
-            if (!tempSet.has(item.version)) {
-                tempSet.add(item.version);
-            }
-        })
-        return Array.from(tempSet);
+        const tempList: string[] = [];
+        // extensionData.versions.forEach(item => {
+        //     if (!tempSet.has(item.version)) {
+        //         tempSet.add(item.version);
+        //         const dateObject = new Date(item.lastUpdated);
+        //         // 使用 UTC 方法提取
+        //         const year = dateObject.getUTCFullYear();
+        //         const month = dateObject.getUTCMonth() + 1; // getUTCMonth() 返回 0-11，需要 +1
+        //         const day = dateObject.getUTCDate();
+
+        //         // 格式化输出
+        //         const yearStr = String(year);
+        //         const monthStr = String(month).padStart(2, '0'); // 确保月份是两位数
+        //         const dayStr = String(day).padStart(2, '0');     // 确保日期是两位数
+
+        //         const date = `${yearStr}-${monthStr}-${dayStr}`;
+        //         tempList.push(date);
+        //     }
+        // })
+        // return Array.from(tempSet);
+        return extensionData.versions;
     } catch (error) {
         console.error('Error:', error);
         throw error;
     }
 }
 
+function timeMap(dateString: string) {
+    const dateObject = new Date(dateString);
+    // 使用 UTC 方法提取
+    const year = dateObject.getUTCFullYear();
+    const month = dateObject.getUTCMonth() + 1; // getUTCMonth() 返回 0-11，需要 +1
+    const day = dateObject.getUTCDate();
+
+    // 格式化输出
+    const yearStr = String(year);
+    const monthStr = String(month).padStart(2, '0'); // 确保月份是两位数
+    const dayStr = String(day).padStart(2, '0');     // 确保日期是两位数
+
+    return `${yearStr}-${monthStr}-${dayStr}`;
+}
+
+function versionDisplayMap(version: Version) {
+    return `${version.version} [${timeMap(version.lastUpdated)} Released]${version.targetPlatform ? ` [${version.targetPlatform}]` : ''}`;
+}
 
 export default function VersionModal(props: { item: ExtensionItem, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) {
     const [inputValue, setInputValue] = createSignal("");
-    const [selectedOption, setSelectedOption] = createSignal("");
+    const [selectedVersion, setSelectedVersion] = createSignal<Version>();
     const [isDropdownOpen, setIsDropdownOpen] = createSignal(true);
-    const [versionList, setVersionList] = createSignal<string[]>([]);
+    const [versionList, setVersionList] = createSignal<Version[]>([]);
+
     const handleClose = () => {
         setInputValue("");
-        setSelectedOption("");
+        setSelectedVersion();
         props.setIsOpen(false);
     }
     const handleDownload = () => {
@@ -77,10 +110,14 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
     });
     // 模糊匹配过滤
     const filteredOptions = () => {
-        if (!inputValue()) return versionList();
-        return versionList().filter(option =>
-            option.toLowerCase().includes(inputValue().toLowerCase())
-        );
+        let result = versionList();
+        if (downloadTarget()?.targetPlatform && downloadTarget()?.targetPlatform !== 'undefined') {
+            result = result.filter(v => v.targetPlatform === downloadTarget()?.targetPlatform)
+        }
+        if (!inputValue()) return result;
+        return result.filter(option => {
+            return versionDisplayMap(option).toLowerCase().includes(inputValue().toLowerCase());
+        });
     };
 
     return (
@@ -88,7 +125,7 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
             {/* 模态框 */}
             <Show when={props.isOpen}>
                 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+                    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
                         {/* 头部 - 标题和关闭按钮 */}
                         <div class="flex justify-between items-center p-4 border-b">
                             <h3 class="text-lg font-semibold">请选择版本</h3>
@@ -106,10 +143,10 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                             <div class="flex items-center border rounded">
                                 <input
                                     type="text"
-                                    value={selectedOption()}
+                                    value={selectedVersion() ? versionDisplayMap(selectedVersion()!) : inputValue()}
                                     onInput={(e) => {
                                         setInputValue(e.currentTarget.value);
-                                        setSelectedOption(e.currentTarget.value);
+                                        // setSelectedVersion(e.currentTarget.value);
                                         setIsDropdownOpen(true);
                                     }}
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen())}
@@ -120,7 +157,7 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                                     onClick={() => {
                                         setDownloadTarget({
                                             ...downloadTarget(),
-                                            version: selectedOption(),
+                                            version: selectedVersion()?.version,
                                         })
                                         handleDownload()
                                     }}
@@ -136,13 +173,19 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                                     filteredOptions().map(option => (
                                         <div
                                             onClick={() => {
-                                                setSelectedOption(option);
+                                                setSelectedVersion(option);
+                                                if (option.targetPlatform) {
+                                                    setDownloadTarget({
+                                                        ...downloadTarget(),
+                                                        targetPlatform: option.targetPlatform
+                                                    })
+                                                }
                                                 setInputValue("");
                                                 setIsDropdownOpen(false);
                                             }}
                                             class="p-2 hover:bg-gray-100 cursor-pointer"
                                         >
-                                            {option}
+                                            {versionDisplayMap(option)}
                                         </div>
                                     ))
                                 ) : (
