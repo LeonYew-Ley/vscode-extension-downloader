@@ -9,7 +9,7 @@ import Modal from './components/base/Modal';
 import { downloadTarget, isTargetPlatformModalOpen, setDownloadTarget, setIsTargetPlatformModalOpen } from './store';
 import ToastContainer from './components/base/Toast';
 import { execDownload, useQueryParameters } from './utils';
-
+import logoUrl from './assets/logo.png';
 
 export default function App() {
   const [query, setQuery] = createSignal('');
@@ -80,37 +80,42 @@ export default function App() {
       scrollTo(0, 0);
     }
   };
+  const handler = () => {
+    const queryParam = getSearchParams('q')
+    if (queryParam) {
+      setQuery(queryParam);
+      performSearch();
+    }
+  };
+  handler();
   createEffect(() => {
-    const handler = () => {
-      const queryParam = getSearchParams('q')
-      if (queryParam) {
-        setQuery(queryParam);
-        performSearch();
-      }
-    };
     window.addEventListener('popstate', handler);
     onCleanup(() => window.removeEventListener('popstate', handler));
   });
-  
+
 
 
   return (
     <div class="min-h-screen flex flex-col bg-gray-50">
       {/* 顶部导航 */}
-      <header class="sticky top-0 z-1 bg-white shadow-sm py-2 px-6 flex justify-center items-center">
-        <div class="w-full justify-end relative flex max-w-6xl">
-          {navLinks.map(link => (
-            <a
-              href={link.url}
-              target="_blank"
-              class="py-2 px-2 text-black hover:text-blue-600 hover:bg-blue-300 bg-blue-200 transition-colors no-underline"
-            >
-              {link.name}
-            </a>
-          ))}
-          {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500">搜索中...</div>}
+      <header class="sticky top-0 z-1 bg-white shadow-sm flex justify-center items-center">
+        <div class='max-w-6xl flex justify-between items-center w-full'>
+          <a id='title' href='/' class='relative h-full' data-text="vsc-extension-downloader">
+            <img class='h-42px' src={logoUrl} alt="" />
+          </a>
+          <div class="relative flex py-2">
+            {navLinks.map(link => (
+              <a
+                href={link.url}
+                target="_blank"
+                class="py-2 px-2 text-black hover:text-blue-600 hover:bg-blue-300 bg-blue-200 transition-colors no-underline"
+              >
+                {link.name}
+              </a>
+            ))}
+            {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500">搜索中...</div>}
+          </div>
         </div>
-
 
       </header>
 
