@@ -21,13 +21,14 @@ const SearchBox: Component<SearchBoxProps> = (props) => {
         onInput={(e) => props.onInput(e.currentTarget.value)}
         onKeyDown={handleKeyDown}
         placeholder="搜索扩展..."
-        class="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+        autofocus
+        class="w-full box-border pl-12px pr-104px py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
       />
       <button
         onClick={props.onSearch}
-        class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-md hover:bg-blue-700 transition-colors"
+        class="absolute h-80% right-1 top-50% -translate-y-1/2 w-100px right-0 bg-blue-600 text-white px-4 py-1 rounded-md border-0 hover:bg-blue-700 transition-colors"
       >
-        搜索
+        搜索(Enter)
       </button>
     </div>
   );

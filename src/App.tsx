@@ -1,4 +1,4 @@
-import { createSignal, For } from 'solid-js';
+import { createEffect, createSignal, For, onCleanup } from 'solid-js';
 import SearchBox from './components/SearchBox';
 import ResultCard from './components/ResultCard';
 import Pagination from './components/Pagination';
@@ -8,7 +8,7 @@ import { ExtensionItem } from './types/extensionItem';
 import Modal from './components/base/Modal';
 import { downloadTarget, isTargetPlatformModalOpen, setDownloadTarget, setIsTargetPlatformModalOpen } from './store';
 import ToastContainer from './components/base/Toast';
-import { execDownload } from './utils';
+import { execDownload, useQueryParameters } from './utils';
 
 
 export default function App() {
@@ -20,6 +20,7 @@ export default function App() {
   // 模态框属性
   const [isOpen, setIsOpen] = createSignal(false);
   const [currentItem, setCurrentItem] = createSignal<ExtensionItem | null>(null);
+  const [getSearchParams, setSearchParams] = useQueryParameters();
   // 顶部导航链接
   const navLinks = [
     { name: "GitHub", url: "https://github.com/OldSaltFish/vscode-extension-downloader" },
@@ -79,6 +80,18 @@ export default function App() {
       scrollTo(0, 0);
     }
   };
+  createEffect(() => {
+    const handler = () => {
+      const queryParam = getSearchParams('q')
+      if (queryParam) {
+        setQuery(queryParam);
+        performSearch();
+      }
+    };
+    window.addEventListener('popstate', handler);
+    onCleanup(() => window.removeEventListener('popstate', handler));
+  });
+  
 
 
   return (
@@ -98,16 +111,19 @@ export default function App() {
           {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500">搜索中...</div>}
         </div>
 
-        
+
       </header>
 
       {/* 主要内容区 */}
       <main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div class="sticky top-72px w-full max-w-2xl transition-all duration-300">
+        <div class="sticky z-1 top-72px w-full max-w-2xl transition-all duration-300">
           <SearchBox
             query={query()}
             onInput={setQuery}
-            onSearch={performSearch}
+            onSearch={() => {
+              setSearchParams('q', query(), false);
+              performSearch();
+            }}
           />
 
         </div>
