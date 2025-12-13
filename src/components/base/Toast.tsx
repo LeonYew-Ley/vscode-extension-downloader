@@ -39,10 +39,10 @@ export const showToast = (props: ToastProps): void => {
 const ToastContainer: Component = () => {
   const getToastTypeStyles = (type: ToastProps['type'] = 'info'): string => {
     const styles = {
-      success: 'bg-green-500',
-      error: 'bg-red-500',
-      info: 'bg-gray-500',
-      warning: 'bg-yellow-500',
+      success: 'bg-green-500 dark:bg-green-600',
+      error: 'bg-red-500 dark:bg-red-600',
+      info: 'bg-gray-500 dark:bg-gray-600',
+      warning: 'bg-yellow-500 dark:bg-yellow-600',
     };
     return styles[type];
   };

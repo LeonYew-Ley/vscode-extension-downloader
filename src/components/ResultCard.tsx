@@ -90,61 +90,71 @@ const ResultCard: Component<ResultCardProps> = (props) => {
             <span class="absolute inset-0 overflow-hidden" style={{ width: '50%' }}>
               <span class="text-yellow-500">★</span>
             </span>
-            <span class="text-gray-300">★</span>
+            <span class="text-gray-300 dark:text-gray-600">★</span>
           </span>
         );
       } else {
         // 空星
-        stars.push(<span class="text-gray-300">★</span>);
+        stars.push(<span class="text-gray-300 dark:text-gray-600">★</span>);
       }
     }
     return stars;
   };
   return (
-    <div class="p-4 flex flex-col bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-
-      {/* <div class="flex items-center mb-3"> */}
-      <div class="bg-gray-200 py-7px text-center border-2 border-dashed rounded-xl overflow-hidden" >
+    <div class="p-4 flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+      {/* Logo 和评分下载量区域 */}
+      <div class="flex-shrink-0 mr-4 flex flex-col items-start">
         <img class='h-72px' src={props.item.versions[0].files[1]?.source || 'https://cdn.vsassets.io/v/M266_20251205.4/_content/Header/default_icon.png'} alt="" />
+        {/* 评分和下载量 */}
+        <div class="mt-2 flex flex-col items-start gap-1">
+          <span class="text-yellow-500 flex items-center">
+            {renderStars()}
+          </span>
+          <span class="text-base text-gray-500 dark:text-gray-400 flex items-center gap-1">
+            <i class="bowtie-icon bowtie-install install-icon"></i>
+            <span>{downloadCount}</span>
+          </span>
+        </div>
       </div>
-      <div class="ml-4 flex-1">
-        <a 
-          href={getMarketplaceUrl()}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="font-semibold text-lg text-black no-underline hover:underline hover:decoration-black cursor-pointer inline-block"
-          style={{ textDecoration: 'none' }}
-          onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-          onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-        >
-          {props.item.displayName}
-        </a>
-        <div class="flex items-center justify-between">
-          <p class="flex-1 text-gray-500 text-sm">{props.item.publisher.displayName}</p>
+      
+      {/* 右侧内容区域 */}
+      <div class="flex-1 flex flex-col">
+        {/* 插件名称和作者 */}
+        <div class="mb-0.5">
+          <a 
+            href={getMarketplaceUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-lg text-black dark:text-white no-underline hover:underline hover:decoration-black dark:hover:decoration-white cursor-pointer inline-block transition-colors"
+            style={{ 'text-decoration': 'none' }}
+            onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+          >
+            {props.item.displayName}
+          </a>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 mb-0.2">{props.item.publisher.displayName}</p>
+        </div>
+        
+        {/* 描述 */}
+        <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-2 mt-0.5">{props.item.shortDescription}</p>
+        
+        {/* 底部：按钮 */}
+        <div class="mt-auto flex items-center justify-end gap-3">
+          {/* 历史版本按钮 */}
+          <button
+            onClick={() => handleVersion()}
+            class="bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors border border-gray-300 dark:border-gray-600"
+          >
+            历史版本
+          </button>
+          {/* 下载按钮 */}
           <button
             onClick={() => handleDownload(props.item)}
-            class="bg-blue-600 text-white py-8px rounded-md hover:bg-blue-700 transition-colors"
+            class="bg-blue-600 dark:bg-blue-700 text-white py-8px px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors border-none"
           >
             下载
           </button>
         </div>
-        <div class='relative group'>
-          <a
-            onClick={() => handleVersion()}
-            class="inline-block underline underline-offset-4 float-right hover:text-blue-500 transition-colors cursor-pointer"
-          >
-            历史版本
-          </a>
-        </div>
-      </div>
-      <p class="text-gray-600 text-sm line-clamp-2">{props.item.shortDescription}</p>
-      <div class="mt-3 flex items-center justify-between">
-        <span class="text-yellow-500 flex items-center">
-          {renderStars()}
-        </span>
-        <span class="text-sm text-gray-500">
-          {downloadCount} 次下载
-        </span>
       </div>
     </div>
   );

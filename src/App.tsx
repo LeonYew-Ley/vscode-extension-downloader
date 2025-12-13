@@ -162,9 +162,9 @@ export default function App() {
 
 
   return (
-    <div class="min-h-screen flex flex-col bg-gray-50">
+    <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* 顶部导航 */}
-      <header class="sticky top-0 z-1 bg-white shadow-sm flex justify-center items-center py-2 px-4">
+      <header class="sticky top-0 z-1 bg-white dark:bg-gray-800 shadow-sm flex justify-center items-center py-2 px-4 transition-colors">
         <div class='max-w-6xl flex justify-between items-center w-full gap-4'>
           {/* Logo */}
           {results().length > 0 && (
@@ -195,7 +195,7 @@ export default function App() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center w-12 h-12 text-gray-700 hover:text-blue-600 hover:bg-blue-100 rounded-lg transition-colors no-underline"
+                class="flex items-center justify-center w-12 h-12 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors no-underline"
                 title={link.name}
               >
                 {link.isCustomIcon && link.name === "知乎" ? (
@@ -207,14 +207,14 @@ export default function App() {
                 )}
               </a>
             ))}
-            {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500">搜索中...</div>}
+            {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500 dark:text-gray-400">搜索中...</div>}
           </div>
         </div>
 
       </header>
 
       {/* 主要内容区 */}
-      <main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
+      <main class={`flex-1 flex flex-col items-center px-4 pb-12 pt-6 ${results().length > 0 ? 'justify-start' : 'justify-center'}`}>
         {/* 首页状态：无搜索结果时，显示居中的Logo和搜索框 */}
         {results().length === 0 && !isSearching() && (
           <div class="flex flex-col items-center justify-center gap-10 w-full max-w-2xl -mt-24">
@@ -234,7 +234,7 @@ export default function App() {
 
         {/* 搜索结果状态：有结果时，显示搜索结果列表 */}
         {results().length > 0 && (
-          <div class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="w-full max-w-6xl mt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <For each={results()}>
               {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
             </For>
@@ -250,14 +250,14 @@ export default function App() {
       </main>
 
       {/* 底部信息 */}
-      <footer class="bg-white py-6 px-4 border-t border-gray-200">
+      <footer class="bg-white dark:bg-gray-800 py-6 px-4 border-t border-gray-200 dark:border-gray-700 transition-colors">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div class="text-gray-500 text-sm flex items-center gap-1">
+          <div class="text-gray-500 dark:text-gray-400 text-sm flex items-center gap-1">
             <i class="fa-regular fa-copyright"></i>
             2025 VSCode 插件在线下载
           </div>
           <div class="mt-4 md:mt-0">
-            <a href="mailto:dreamsoul23@qq.com" class="text-gray-700 hover:text-gray-900 no-underline hover:underline flex items-center gap-2">
+            <a href="mailto:dreamsoul23@qq.com" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white no-underline hover:underline flex items-center gap-2 transition-colors">
               <i class="fa-regular fa-envelope"></i>
               dreamsoul23@qq.com
             </a>
@@ -267,7 +267,7 @@ export default function App() {
       <VersionModal item={currentItem()!} isOpen={isOpen()} setIsOpen={setIsOpen} />
       <Modal title='选择架构' isOpen={isTargetPlatformModalOpen()} onClose={() => setIsTargetPlatformModalOpen(false)}>
         <div class='flex justify-center gap-12px'>
-          <select class='w-50% p-8px' value={downloadTarget()?.targetPlatform} onChange={e => {
+          <select class='w-50% p-8px bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md' value={downloadTarget()?.targetPlatform} onChange={e => {
             setDownloadTarget({
               ...downloadTarget(),
               targetPlatform: e.target.value,
@@ -283,7 +283,7 @@ export default function App() {
               )
             })}
           </select>
-          <button class='bg-blue-600 text-white py-8px rounded-md hover:bg-blue-700 transition-colors' onClick={() => {
+          <button class='bg-blue-600 dark:bg-blue-700 text-white py-8px rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors' onClick={() => {
             execDownload(downloadTarget()!);
             setIsTargetPlatformModalOpen(false);
           }}>下载</button>

@@ -27,6 +27,9 @@ const LoadingSpinner: Component = () => {
           background-color: #2563eb;
           animation: spinner-bounce 1.4s ease-in-out infinite both;
         }
+        .dark .spinner-dot {
+          background-color: #3b82f6;
+        }
         .spinner-dot:nth-child(1) {
           animation-delay: -0.32s;
         }
