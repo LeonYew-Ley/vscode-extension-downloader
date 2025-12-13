@@ -162,20 +162,20 @@ export default function App() {
 
 
   return (
-    <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-zinc-900 transition-colors">
       {/* 顶部导航 */}
-      <header class="sticky top-0 z-1 bg-white dark:bg-gray-800 shadow-sm flex justify-center items-center py-2 px-4 transition-colors">
+      <header class="sticky top-0 z-1 bg-white dark:bg-zinc-800 shadow-sm flex justify-center items-center py-2 px-4 transition-colors">
         <div class='max-w-6xl flex justify-between items-center w-full gap-4'>
           {/* Logo */}
-          {results().length > 0 && (
+          {(query().length > 0 || results().length > 0) && (
             <a id='title' href='/' class='relative h-full flex-shrink-0' data-text="vsc-extension-downloader">
               <img class='h-42px' src={logoUrl} alt="" />
             </a>
           )}
-          {results().length === 0 && <div></div>}
+          {query().length === 0 && results().length === 0 && <div></div>}
           
-          {/* 搜索框 - 只在有搜索结果时显示在顶部菜单栏 */}
-          {results().length > 0 && (
+          {/* 搜索框 - 有查询词或有结果时显示在顶部菜单栏 */}
+          {(query().length > 0 || results().length > 0) && (
             <div class="flex-1 max-w-2xl mx-4">
               <SearchBox
                 query={query()}
@@ -195,7 +195,7 @@ export default function App() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center w-12 h-12 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors no-underline"
+                class="flex items-center justify-center w-12 h-12 text-gray-700 dark:text-zinc-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors no-underline"
                 title={link.name}
               >
                 {link.isCustomIcon && link.name === "知乎" ? (
@@ -207,7 +207,6 @@ export default function App() {
                 )}
               </a>
             ))}
-            {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500 dark:text-gray-400">搜索中...</div>}
           </div>
         </div>
 
@@ -215,8 +214,8 @@ export default function App() {
 
       {/* 主要内容区 */}
       <main class={`flex-1 flex flex-col items-center px-4 pb-12 pt-6 ${results().length > 0 ? 'justify-start' : 'justify-center'}`}>
-        {/* 首页状态：无搜索结果时，显示居中的Logo和搜索框 */}
-        {results().length === 0 && !isSearching() && (
+        {/* 首页状态：无查询词且无搜索结果且不在搜索时，显示居中的Logo和搜索框 */}
+        {query().length === 0 && results().length === 0 && !isSearching() && (
           <div class="flex flex-col items-center justify-center gap-10 w-full max-w-2xl -mt-24">
             <img class="h-80px" src={logoUrl} alt="" />
             <div class="w-full">
@@ -232,6 +231,23 @@ export default function App() {
           </div>
         )}
 
+        {/* 搜索中状态：显示加载动画 */}
+        {isSearching() && results().length === 0 && (
+          <div class="w-full max-w-6xl flex justify-center mt-8">
+            <LoadingSpinner />
+          </div>
+        )}
+
+        {/* 无搜索结果状态：有查询词但无结果且不在搜索时，显示提示 */}
+        {query().length > 0 && results().length === 0 && !isSearching() && (
+          <div class="flex flex-col items-center justify-center gap-6">
+            <svg class="w-200px h-200px fill-gray-300 dark:fill-zinc-500" viewBox="0 0 1029 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+              <path d="M896 384zM896 384zM896 378.88c-5.12 0-5.12 0 0 0-5.12 0-5.12 0 0 0zM517.12 220.16c5.12 5.12 15.36 5.12 25.6 5.12 10.24-5.12 15.36-10.24 15.36-20.48l-5.12-107.52c0-10.24-10.24-20.48-25.6-20.48s-25.6 10.24-20.48 20.48l5.12 107.52c-5.12 10.24 0 15.36 5.12 15.36zM291.84 271.36c5.12 5.12 15.36 5.12 20.48 5.12 5.12 0 15.36-10.24 15.36-15.36 0-10.24 0-15.36-5.12-20.48l-81.92-76.8c-5.12-5.12-15.36-5.12-20.48-5.12-5.12 0-15.36 10.24-15.36 15.36 0 10.24 0 15.36 5.12 20.48l81.92 76.8zM890.88 378.88zM727.04 250.88c5.12 0 10.24-5.12 15.36-5.12l81.92-81.92c5.12-5.12 5.12-10.24 5.12-15.36 0-5.12-5.12-10.24-5.12-15.36-10.24-10.24-25.6-10.24-30.72 0l-81.92 81.92c-5.12 5.12-5.12 10.24-5.12 15.36 0 5.12 5.12 10.24 5.12 15.36 5.12 5.12 10.24 5.12 15.36 5.12zM885.76 368.64zM885.76 368.64zM896 389.12c0-5.12 0-5.12 0 0 0-5.12 0-5.12 0 0-10.24-15.36-30.72-35.84-56.32-35.84h-650.24c-25.6 0-40.96 10.24-56.32 35.84-15.36 20.48-133.12 204.8-133.12 240.64v245.76c0 40.96 30.72 71.68 71.68 71.68h880.64c40.96 0 71.68-30.72 71.68-71.68v-245.76c5.12-40.96-107.52-215.04-128-240.64z m-245.76 235.52c-15.36 0-30.72 10.24-35.84 25.6v5.12c0 61.44-51.2 117.76-112.64 117.76-61.44 0-112.64-51.2-112.64-117.76v-5.12c-10.24-25.6-30.72-25.6-30.72-25.6h-302.08l102.4-189.44s20.48-35.84 46.08-30.72h609.28c20.48 0 25.6 10.24 40.96 30.72l102.4 189.44h-307.2zM890.88 373.76zM890.88 378.88s0-5.12 0 0zM890.88 373.76zM890.88 373.76z"></path>
+            </svg>
+            <p class="text-gray-500 dark:text-zinc-400 text-lg">没有搜索到相关插件</p>
+          </div>
+        )}
+
         {/* 搜索结果状态：有结果时，显示搜索结果列表 */}
         {results().length > 0 && (
           <div class="w-full max-w-6xl mt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -241,7 +257,7 @@ export default function App() {
           </div>
         )}
         
-        {/* 加载动画 */}
+        {/* 加载更多动画 */}
         {isLoadingMore() && (
           <div class="w-full max-w-6xl mt-8 flex justify-center">
             <LoadingSpinner />
@@ -250,14 +266,14 @@ export default function App() {
       </main>
 
       {/* 底部信息 */}
-      <footer class="bg-white dark:bg-gray-800 py-6 px-4 border-t border-gray-200 dark:border-gray-700 transition-colors">
+      <footer class="bg-white dark:bg-zinc-800 py-6 px-4 border-t border-gray-200 dark:border-zinc-700 transition-colors">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div class="text-gray-500 dark:text-gray-400 text-sm flex items-center gap-1">
+          <div class="text-gray-500 dark:text-zinc-400 text-sm flex items-center gap-1">
             <i class="fa-regular fa-copyright"></i>
             2025 VSCode 插件在线下载
           </div>
           <div class="mt-4 md:mt-0">
-            <a href="mailto:dreamsoul23@qq.com" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white no-underline hover:underline flex items-center gap-2 transition-colors">
+            <a href="mailto:dreamsoul23@qq.com" class="text-gray-700 dark:text-zinc-300 hover:text-gray-900 dark:hover:text-white no-underline hover:underline flex items-center gap-2 transition-colors">
               <i class="fa-regular fa-envelope"></i>
               dreamsoul23@qq.com
             </a>
@@ -267,7 +283,7 @@ export default function App() {
       <VersionModal item={currentItem()!} isOpen={isOpen()} setIsOpen={setIsOpen} />
       <Modal title='选择架构' isOpen={isTargetPlatformModalOpen()} onClose={() => setIsTargetPlatformModalOpen(false)}>
         <div class='flex justify-center gap-12px'>
-          <select class='w-50% p-8px bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md' value={downloadTarget()?.targetPlatform} onChange={e => {
+          <select class='w-50% p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md' value={downloadTarget()?.targetPlatform} onChange={e => {
             setDownloadTarget({
               ...downloadTarget(),
               targetPlatform: e.target.value,

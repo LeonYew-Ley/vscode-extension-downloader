@@ -27,7 +27,7 @@ const Modal: Component<ModalProps> = (props) => {
           <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" />
 
           {/* 对话框主体 */}
-          <div class="relative z-10 w-full max-w-md rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl transition-colors">
+          <div class="relative z-10 w-full max-w-md rounded-lg bg-white dark:bg-zinc-800 p-6 shadow-xl transition-colors">
             {/* 标题栏 */}
             <Show when={props.title}>
               <div class="mb-4 text-lg font-bold text-gray-900 dark:text-white border-b-2 border-black/25 dark:border-white/25">
@@ -36,12 +36,12 @@ const Modal: Component<ModalProps> = (props) => {
             </Show>
 
             {/* 内容区域 */}
-            <div class="relative text-gray-900 dark:text-gray-100">{props.children}</div>
+            <div class="relative text-gray-900 dark:text-zinc-100">{props.children}</div>
 
             {/* 关闭按钮 */}
             <button
               onClick={props.onClose}
-              class="absolute right-4 top-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              class="absolute right-4 top-4 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors"
             >
               <svg
                 class="h-5 w-5"

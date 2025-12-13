@@ -39,7 +39,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(1)}
                     disabled={currentPage() === 1}
-                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800 disabled:hover:border-gray-200 dark:disabled:hover:border-gray-700 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-300 shadow-sm hover:shadow-md active:scale-95"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-zinc-800 disabled:hover:border-gray-200 dark:disabled:hover:border-zinc-700 disabled:hover:text-gray-600 dark:disabled:hover:text-zinc-300 shadow-sm hover:shadow-md active:scale-95"
                     title="第一页"
                 >
                     &laquo;
@@ -49,7 +49,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(currentPage() - 1)}
                     disabled={currentPage() === 1}
-                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800 disabled:hover:border-gray-200 dark:disabled:hover:border-gray-700 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-300 shadow-sm hover:shadow-md active:scale-95"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-zinc-800 disabled:hover:border-gray-200 dark:disabled:hover:border-zinc-700 disabled:hover:text-gray-600 dark:disabled:hover:text-zinc-300 shadow-sm hover:shadow-md active:scale-95"
                     title="上一页"
                 >
                     &lt;
@@ -66,7 +66,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                         // 其他页
                         <button
                             onClick={() => goToPage(page)}
-                            class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white shadow-sm hover:shadow-md active:scale-95"
+                            class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600 hover:text-gray-900 dark:hover:text-white shadow-sm hover:shadow-md active:scale-95"
                         >
                             {page}
                         </button>
@@ -77,7 +77,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(currentPage() + 1)}
                     disabled={currentPage() === totalPages()}
-                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800 disabled:hover:border-gray-200 dark:disabled:hover:border-gray-700 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-300 shadow-sm hover:shadow-md active:scale-95"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-zinc-800 disabled:hover:border-gray-200 dark:disabled:hover:border-zinc-700 disabled:hover:text-gray-600 dark:disabled:hover:text-zinc-300 shadow-sm hover:shadow-md active:scale-95"
                     title="下一页"
                 >
                     &gt;
@@ -87,7 +87,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(totalPages())}
                     disabled={currentPage() === totalPages()}
-                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800 disabled:hover:border-gray-200 dark:disabled:hover:border-gray-700 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-300 shadow-sm hover:shadow-md active:scale-95"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 font-medium transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-zinc-800 disabled:hover:border-gray-200 dark:disabled:hover:border-zinc-700 disabled:hover:text-gray-600 dark:disabled:hover:text-zinc-300 shadow-sm hover:shadow-md active:scale-95"
                     title="最后一页"
                 >
                     &raquo;

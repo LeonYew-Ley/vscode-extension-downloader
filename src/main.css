@@ -1,5 +1,36 @@
+html {
+    /* 始终保留滚动条占位空间，防止内容宽度变化 */
+    scrollbar-gutter: stable;
+}
+
 body {
     margin: 0;
+    /* 备用方案：如果浏览器不支持 scrollbar-gutter，使用 overflow-y: scroll */
+    overflow-y: scroll;
+}
+
+/* 覆盖 UnoCSS 默认的蓝色 ring 颜色，改为灰色系 */
+:root {
+    --un-ring-color: rgb(166, 166, 166); /* gray-400 */
+}
+
+.dark {
+    --un-ring-color: rgb(109, 109, 109); /* gray-500 */
+}
+
+/* 移除所有元素的默认 focus ring（如果需要完全去掉蓝色） */
+*:focus {
+    outline: none;
+}
+
+/* 或者使用灰色系的 focus ring */
+*:focus-visible {
+    outline: 2px solid rgb(156, 163, 175);
+    outline-offset: 2px;
+}
+
+.dark *:focus-visible {
+    outline-color: rgb(107, 114, 128);
 }
 
 @keyframes spin {
@@ -21,6 +52,12 @@ input[type="search"] {
     border-width: 1px;
     border-image: none;
     box-shadow: none;
+}
+
+/* 移除搜索框聚焦时的外边框，只保留边框颜色变化 */
+input[type="text"]:focus-visible,
+input[type="search"]:focus-visible {
+    outline: none;
 }
 
 /* 下载图标样式 */

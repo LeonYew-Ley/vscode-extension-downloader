@@ -41,7 +41,7 @@ const ToastContainer: Component = () => {
     const styles = {
       success: 'bg-green-500 dark:bg-green-600',
       error: 'bg-red-500 dark:bg-red-600',
-      info: 'bg-gray-500 dark:bg-gray-600',
+      info: 'bg-gray-500 dark:bg-zinc-600',
       warning: 'bg-yellow-500 dark:bg-yellow-600',
     };
     return styles[type];

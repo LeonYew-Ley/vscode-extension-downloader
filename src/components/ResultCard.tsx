@@ -90,18 +90,18 @@ const ResultCard: Component<ResultCardProps> = (props) => {
             <span class="absolute inset-0 overflow-hidden" style={{ width: '50%' }}>
               <span class="text-yellow-500">★</span>
             </span>
-            <span class="text-gray-300 dark:text-gray-600">★</span>
+            <span class="text-gray-300 dark:text-zinc-600">★</span>
           </span>
         );
       } else {
         // 空星
-        stars.push(<span class="text-gray-300 dark:text-gray-600">★</span>);
+        stars.push(<span class="text-gray-300 dark:text-zinc-600">★</span>);
       }
     }
     return stars;
   };
   return (
-    <div class="p-4 flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+    <div class="p-4 flex bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-zinc-700 hover:shadow-lg transition-shadow">
       {/* Logo 和评分下载量区域 */}
       <div class="flex-shrink-0 mr-4 flex flex-col items-start">
         <img class='h-72px' src={props.item.versions[0].files[1]?.source || 'https://cdn.vsassets.io/v/M266_20251205.4/_content/Header/default_icon.png'} alt="" />
@@ -110,7 +110,7 @@ const ResultCard: Component<ResultCardProps> = (props) => {
           <span class="text-yellow-500 flex items-center">
             {renderStars()}
           </span>
-          <span class="text-base text-gray-500 dark:text-gray-400 flex items-center gap-1">
+          <span class="text-base text-gray-500 dark:text-zinc-400 flex items-center gap-1">
             <i class="bowtie-icon bowtie-install install-icon"></i>
             <span>{downloadCount}</span>
           </span>
@@ -132,18 +132,18 @@ const ResultCard: Component<ResultCardProps> = (props) => {
           >
             {props.item.displayName}
           </a>
-          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 mb-0.2">{props.item.publisher.displayName}</p>
+          <p class="text-gray-500 dark:text-zinc-400 text-sm mt-1 mb-0.2">{props.item.publisher.displayName}</p>
         </div>
         
         {/* 描述 */}
-        <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-2 mt-0.5">{props.item.shortDescription}</p>
+        <p class="text-gray-600 dark:text-zinc-300 text-sm line-clamp-2 mb-2 mt-0.5">{props.item.shortDescription}</p>
         
         {/* 底部：按钮 */}
         <div class="mt-auto flex items-center justify-end gap-3">
           {/* 历史版本按钮 */}
           <button
             onClick={() => handleVersion()}
-            class="bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors border border-gray-300 dark:border-gray-600"
+            class="bg-white dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors border border-gray-300 dark:border-zinc-600"
           >
             历史版本
           </button>
