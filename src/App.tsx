@@ -164,7 +164,7 @@ export default function App() {
   return (
     <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-zinc-900 transition-colors">
       {/* 顶部导航 */}
-      <header class="sticky top-0 z-1 bg-white dark:bg-zinc-800 shadow-sm flex justify-center items-center py-2 px-4 transition-colors">
+      <header class="sticky top-0 z-1 bg-white dark:bg-zinc-800 shadow-md flex justify-center items-center py-2 px-4 transition-colors">
         <div class='max-w-6xl flex justify-between items-center w-full gap-4'>
           {/* Logo */}
           {(query().length > 0 || results().length > 0) && (

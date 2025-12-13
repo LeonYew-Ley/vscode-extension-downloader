@@ -103,10 +103,10 @@ const ResultCard: Component<ResultCardProps> = (props) => {
   return (
     <div class="p-4 flex bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-zinc-700 hover:shadow-lg transition-shadow">
       {/* Logo 和评分下载量区域 */}
-      <div class="flex-shrink-0 mr-4 flex flex-col items-start">
+      <div class="flex-shrink-0 mr-4 flex flex-col items-center">
         <img class='h-72px' src={props.item.versions[0].files[1]?.source || 'https://cdn.vsassets.io/v/M266_20251205.4/_content/Header/default_icon.png'} alt="" />
         {/* 评分和下载量 */}
-        <div class="mt-2 flex flex-col items-start gap-1">
+        <div class="mt-2 flex flex-col items-center gap-1">
           <span class="text-yellow-500 flex items-center">
             {renderStars()}
           </span>
@@ -125,7 +125,7 @@ const ResultCard: Component<ResultCardProps> = (props) => {
             href={getMarketplaceUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            class="font-semibold text-lg text-black dark:text-white no-underline hover:underline hover:decoration-black dark:hover:decoration-white cursor-pointer inline-block transition-colors"
+            class="font-semibold text-lg text-black dark:text-white no-underline hover:underline hover:decoration-black dark:hover:decoration-white cursor-pointer block transition-colors line-clamp-2"
             style={{ 'text-decoration': 'none' }}
             onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
             onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
