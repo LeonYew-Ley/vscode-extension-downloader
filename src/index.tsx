@@ -27,4 +27,11 @@ link.integrity = 'sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlne
 link.crossOrigin = 'anonymous';
 document.head.appendChild(link);
 
+// 设置网站图标
+const favicon = document.createElement('link');
+favicon.rel = 'icon';
+favicon.type = 'image/svg+xml';
+favicon.href = '/favicon.svg';
+document.head.appendChild(favicon);
+
 render(() => <App />, document.getElementById('root')!);
