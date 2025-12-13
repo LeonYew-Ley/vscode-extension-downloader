@@ -87,44 +87,72 @@ input[type="search"]:focus-visible {
     vertical-align: middle;
 }
 
-/* 滚动条样式 - 浅色模式 */
-::-webkit-scrollbar {
+/* 滚动条样式 - 浅色模式（默认） */
+html ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
-::-webkit-scrollbar-track {
+html ::-webkit-scrollbar-track {
     background: #f3f4f6;
 }
 
-::-webkit-scrollbar-thumb {
+html ::-webkit-scrollbar-thumb {
     background: #d1d5db;
     border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+html ::-webkit-scrollbar-thumb:hover {
     background: #9ca3af;
 }
 
 /* 滚动条样式 - 深色模式 */
-.dark ::-webkit-scrollbar-track {
-    background: #27272a;
+html.dark::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-    background: #52525b;
+html.dark::-webkit-scrollbar-track {
+    background: #18181b !important;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: #71717a;
+html.dark::-webkit-scrollbar-thumb {
+    background: #3f3f46 !important;
+    border-radius: 4px;
+}
+
+html.dark::-webkit-scrollbar-thumb:hover {
+    background: #52525b !important;
+}
+
+/* 也针对 body 元素设置（某些情况下滚动条在 body 上） */
+body ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+html.dark body ::-webkit-scrollbar-track {
+    background: #18181b !important;
+}
+
+html.dark body ::-webkit-scrollbar-thumb {
+    background: #3f3f46 !important;
+}
+
+html.dark body ::-webkit-scrollbar-thumb:hover {
+    background: #52525b !important;
 }
 
 /* Firefox 滚动条样式 */
-* {
+html {
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f3f4f6;
 }
 
-.dark * {
-    scrollbar-color: #52525b #27272a;
+html.dark {
+    scrollbar-color: #3f3f46 #18181b !important;
 }

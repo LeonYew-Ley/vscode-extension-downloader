@@ -5,16 +5,11 @@ import App from './App';
 
 // 初始化深色模式（在渲染前应用，避免闪烁）
 const initTheme = () => {
-  const saved = localStorage.getItem('theme');
-  if (saved === 'dark') {
+  // 直接检测浏览器主题
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.documentElement.classList.add('dark');
-  } else if (saved === 'light') {
-    document.documentElement.classList.remove('dark');
   } else {
-    // 如果没有保存的主题，使用系统偏好
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.classList.add('dark');
-    }
+    document.documentElement.classList.remove('dark');
   }
 };
 initTheme();

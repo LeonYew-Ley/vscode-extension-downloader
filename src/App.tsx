@@ -322,28 +322,52 @@ export default function App() {
         </div>
       </footer>
       <VersionModal item={currentItem()!} isOpen={isOpen()} setIsOpen={setIsOpen} />
-      <Modal title='选择架构' isOpen={isTargetPlatformModalOpen()} onClose={() => setIsTargetPlatformModalOpen(false)}>
-        <div class='flex justify-center gap-12px'>
-          <select class='w-50% p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md' value={downloadTarget()?.targetPlatform} onChange={e => {
-            setDownloadTarget({
-              ...downloadTarget(),
-              targetPlatform: e.target.value,
-            })
-            console.log('target', downloadTarget());
-
-            execDownload(downloadTarget()!);
-            setIsTargetPlatformModalOpen(false);
-          }}>
+      <Modal 
+        title='选择架构' 
+        subtitle={currentItem()?.displayName}
+        isOpen={isTargetPlatformModalOpen()} 
+        onClose={() => setIsTargetPlatformModalOpen(false)}
+      >
+        <div class='grid gap-2'>
+          <select 
+            class='w-full p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md box-border outline-none focus:outline-none' 
+            value={downloadTarget()?.targetPlatform || ''} 
+            onChange={e => {
+              setDownloadTarget({
+                ...downloadTarget(),
+                targetPlatform: e.target.value || undefined
+              })
+            }}
+            style={{ 'outline': 'none' }}
+            onFocus={(e) => e.currentTarget.style.outline = 'none'}
+            onBlur={(e) => e.currentTarget.style.outline = 'none'}
+          >
+            <option value="">选择插件平台/架构</option>
             {currentItem()?.versions.map(item => {
               return (
                 <option class='p-2' value={item.targetPlatform}>{item.targetPlatform}</option>
               )
             })}
           </select>
-          <button class='bg-blue-600 dark:bg-blue-700 text-white py-8px rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors' onClick={() => {
-            execDownload(downloadTarget()!);
-            setIsTargetPlatformModalOpen(false);
-          }}>下载</button>
+          <div class="flex justify-end gap-2 pt-2 border-t border-gray-200 dark:border-zinc-700">
+            <button 
+              class="bg-white dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors border-none outline-none shadow-none"
+              style={{ 'box-shadow': 'none', 'border': 'none' }}
+              onClick={() => setIsTargetPlatformModalOpen(false)}
+            >
+              取消
+            </button>
+            <button 
+              class="bg-blue-600 dark:bg-blue-700 text-white py-8px px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors border-none outline-none shadow-none"
+              style={{ 'box-shadow': 'none', 'border': 'none' }}
+              onClick={() => {
+                execDownload(downloadTarget()!);
+                setIsTargetPlatformModalOpen(false);
+              }}
+            >
+              下载
+            </button>
+          </div>
         </div>
       </Modal>
       <ToastContainer></ToastContainer>

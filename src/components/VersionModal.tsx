@@ -147,7 +147,7 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
         <>
             {/* 模态框 */}
             <Show when={props.isOpen}>
-                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
                     <div 
                         ref={modalRef}
                         class="backdrop-blur-md rounded-lg w-full max-w-2xl transition-colors relative overflow-hidden" 
@@ -167,7 +167,7 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                             </div>
                             <button
                                 onClick={handleClose}
-                                class="text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition-colorsborder-none outline-none bg-transparent cursor-pointer mt-1"
+                                class="text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition-colors border-none outline-none bg-transparent cursor-pointer mt-1"
                                 style={{ 'box-shadow': 'none', 'border': 'none', 'padding': '0'}}
                             >
                                 <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">

@@ -143,7 +143,7 @@ const ResultCard: Component<ResultCardProps> = (props) => {
           {/* 历史版本按钮 */}
           <button
             onClick={() => handleVersion()}
-            class="bg-white dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors border-none outline-none shadow-none"
+            class="bg-gray-50 dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors border-none outline-none shadow-none"
             style={{ 'box-shadow': 'none', 'border': 'none' }}
           >
             历史版本
