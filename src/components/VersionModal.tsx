@@ -1,8 +1,8 @@
-import { createSignal, Show } from "solid-js";
+import { createSignal, Show, createMemo } from "solid-js";
 import { ExtensionItem, Version } from "../types/extensionItem";
 import { execDownload } from "../utils";
 import { createEffect } from "solid-js";
-import { downloadTarget, setDownloadTarget } from "../store";
+import { downloadTarget, setDownloadTarget, isDarkMode } from "../store";
 // 外部传递ID进行查询，并选择，最终将选择的版本返回给调用者
 
 async function fetchExtensionVersions(id: string = "WallabyJs.console-ninja") {
@@ -85,6 +85,7 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
     const [selectedVersion, setSelectedVersion] = createSignal<Version>();
     const [isDropdownOpen, setIsDropdownOpen] = createSignal(true);
     const [versionList, setVersionList] = createSignal<Version[]>([]);
+    let modalRef: HTMLDivElement | undefined;
 
     const handleClose = () => {
         setInputValue("");
@@ -108,6 +109,28 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
             setIsDropdownOpen(true);
         }
     });
+
+    // 根据深色模式计算背景样式
+    const backgroundStyle = createMemo(() => {
+        const isDark = isDarkMode();
+        
+        if (isDark) {
+            return `
+                linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%),
+                rgba(39, 39, 42, 0.8)
+            `;
+        } else {
+            return `
+                linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.03) 100%),
+                rgba(255, 255, 255, 0.8)
+            `;
+        }
+    });
+
+    const backgroundColor = createMemo(() => {
+        return isDarkMode() ? 'rgba(39, 39, 42, 0.8)' : 'rgba(255, 255, 255, 0.8)';
+    });
+
     // 模糊匹配过滤
     const filteredOptions = () => {
         let result = versionList();
@@ -125,7 +148,17 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
             {/* 模态框 */}
             <Show when={props.isOpen}>
                 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-xl w-full max-w-2xl transition-colors">
+                    <div 
+                        ref={modalRef}
+                        class="backdrop-blur-md rounded-lg w-full max-w-2xl transition-colors relative overflow-hidden" 
+                        style={{
+                            'box-shadow': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                            'backdrop-filter': 'blur(8px) saturate(150%)',
+                            '-webkit-backdrop-filter': 'blur(8px) saturate(150%)',
+                            'background': backgroundStyle(),
+                            'background-color': backgroundColor()
+                        }}
+                    >
                         {/* 头部 - 标题和关闭按钮 */}
                         <div class="flex justify-between items-start py-2 px-4 border-b border-gray-200 dark:border-zinc-700">
                             <div class="flex flex-col">
