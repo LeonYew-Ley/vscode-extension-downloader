@@ -164,15 +164,32 @@ export default function App() {
   return (
     <div class="min-h-screen flex flex-col bg-gray-50">
       {/* 顶部导航 */}
-      <header class="sticky top-0 z-1 bg-white shadow-sm flex justify-center items-center">
-        <div class='max-w-6xl flex justify-between items-center w-full'>
+      <header class="sticky top-0 z-1 bg-white shadow-sm flex justify-center items-center py-2 px-4">
+        <div class='max-w-6xl flex justify-between items-center w-full gap-4'>
+          {/* Logo */}
           {results().length > 0 && (
-            <a id='title' href='/' class='relative h-full' data-text="vsc-extension-downloader">
+            <a id='title' href='/' class='relative h-full flex-shrink-0' data-text="vsc-extension-downloader">
               <img class='h-42px' src={logoUrl} alt="" />
             </a>
           )}
           {results().length === 0 && <div></div>}
-          <div class="relative flex items-center gap-1 py-2">
+          
+          {/* 搜索框 - 只在有搜索结果时显示在顶部菜单栏 */}
+          {results().length > 0 && (
+            <div class="flex-1 max-w-2xl mx-4">
+              <SearchBox
+                query={query()}
+                onInput={setQuery}
+                onSearch={() => {
+                  setSearchParams('q', query(), false);
+                  performSearch(false);
+                }}
+              />
+            </div>
+          )}
+          
+          {/* 导航链接 */}
+          <div class="relative flex items-center gap-1 flex-shrink-0">
             {navLinks.map(link => (
               <a
                 href={link.url}
@@ -215,27 +232,13 @@ export default function App() {
           </div>
         )}
 
-        {/* 搜索结果状态：有结果时，搜索框固定在顶部 */}
+        {/* 搜索结果状态：有结果时，显示搜索结果列表 */}
         {results().length > 0 && (
-          <>
-            <div class="sticky z-1 top-72px w-full max-w-2xl transition-all duration-300">
-              <SearchBox
-                query={query()}
-                onInput={setQuery}
-                onSearch={() => {
-                  setSearchParams('q', query(), false);
-                  performSearch(false);
-                }}
-              />
-            </div>
-
-            {/* 搜索结果列表 */}
-            <div class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <For each={results()}>
-                {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
-              </For>
-            </div>
-          </>
+          <div class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <For each={results()}>
+              {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
+            </For>
+          </div>
         )}
         
         {/* 加载动画 */}
