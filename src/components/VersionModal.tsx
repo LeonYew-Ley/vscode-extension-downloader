@@ -145,6 +145,7 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
 
                         {/* 主体内容 */}
                         <div class="relative p-4 grid gap-2">
+                            <div class="grid gap-0">
                             {/* 搜索和选择区域 */}
                             <div class="relative">
                                 <input
@@ -156,10 +157,19 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                                     }}
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen())}
                                     placeholder="搜索或选择插件版本"
-                                    class="w-full p-8px outline-none bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-zinc-600 rounded-md box-border"
+                                    class={`w-full p-8px outline-none bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-500 dark:placeholder-gray-400 box-border ${
+                                        isDropdownOpen() ? 'rounded-t-md rounded-b-none border-t border-l border-r border-gray-300 dark:border-zinc-600' : 
+                                        'rounded-md border border-gray-300 dark:border-zinc-600'
+                                    }`}
+                                    style={isDropdownOpen() ? { 'border-bottom': 'none' } : {}}
                                 />
-                                {/* 下拉选项 */}
-                                <div class={`${isDropdownOpen() ? '' : 'hidden'} absolute top-full left-0 right-0 bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded shadow-lg max-h-60 overflow-auto z-10`}>
+                            </div>
+                            {/* 下拉选项 */}
+                            <Show when={isDropdownOpen()}>
+                                <div 
+                                    class="bg-white dark:bg-zinc-700 border-l border-r border-b border-gray-300 dark:border-zinc-600 rounded-b-md max-h-60 overflow-auto"
+                                    style={filteredOptions().length > 0 ? { 'box-shadow': 'inset 0 5px 5px 0px rgba(0, 0, 0, 0.1)' } : {}}
+                                >
                                     {filteredOptions().length > 0 ? (
                                         filteredOptions().map(option => (
                                             <div
@@ -180,17 +190,27 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                                             </div>
                                         ))
                                     ) : (
-                                        <div class="w-full p-8px bg-white dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 border-0 box-border text-xs">无匹配结果</div>
+                                        <div 
+                                            class="w-full p-8px bg-white dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 border-0 box-border text-xs"
+                                        >无匹配结果</div>
                                     )}
                                 </div>
+                            </Show>
                             </div>
                             <Show when={props.item.versions.length > 1}>
-                                <select class='w-full p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md box-border' value={downloadTarget()?.targetPlatform || ''} onChange={e => {
-                                    setDownloadTarget({
-                                        ...downloadTarget(),
-                                        targetPlatform: e.target.value || undefined
-                                    })
-                                }}>
+                                <select 
+                                    class='w-full p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md box-border outline-none focus:outline-none' 
+                                    value={downloadTarget()?.targetPlatform || ''} 
+                                    onChange={e => {
+                                        setDownloadTarget({
+                                            ...downloadTarget(),
+                                            targetPlatform: e.target.value || undefined
+                                        })
+                                    }}
+                                    style={{ 'outline': 'none' }}
+                                    onFocus={(e) => e.currentTarget.style.outline = 'none'}
+                                    onBlur={(e) => e.currentTarget.style.outline = 'none'}
+                                >
                                     <option value="">选择插件平台/架构</option>
                                     {props.item?.versions.map(item => {
                                         return (
