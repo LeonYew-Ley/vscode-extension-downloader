@@ -33,13 +33,13 @@ const Pagination: Component<PaginationProps> = (props) => {
     };
 
     return (
-        <div class="flex items-center justify-between gap-4">
-            <div class="flex items-center justify-center gap-8px py-4">
+        <div class="flex items-center justify-center py-4">
+            <div class="flex items-center justify-center gap-2">
                 {/* 第一页按钮 */}
                 <button
                     onClick={() => goToPage(1)}
                     disabled={currentPage() === 1}
-                    class="flex items-center justify-center w-24px h-16px rounded-8px"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-gray-200 text-gray-600 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-200 disabled:hover:text-gray-600 shadow-sm hover:shadow-md active:scale-95"
                     title="第一页"
                 >
                     &laquo;
@@ -49,7 +49,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(currentPage() - 1)}
                     disabled={currentPage() === 1}
-                    class="flex items-center justify-center w-24px h-16px rounded-8px"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-gray-200 text-gray-600 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-200 disabled:hover:text-gray-600 shadow-sm hover:shadow-md active:scale-95"
                     title="上一页"
                 >
                     &lt;
@@ -59,14 +59,14 @@ const Pagination: Component<PaginationProps> = (props) => {
                 {getPageRange().map((page) =>
                     page === currentPage() ? (
                         // 当前页（不可点击）
-                        <span class="flex items-center justify-center w-24px h-16px rounded-8px">
+                        <span class="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-600 text-white font-semibold shadow-md">
                             {page}
                         </span>
                     ) : (
                         // 其他页
                         <button
                             onClick={() => goToPage(page)}
-                            class="flex items-center justify-center w-24px h-16px rounded-8px"
+                            class="flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-gray-200 text-gray-700 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 shadow-sm hover:shadow-md active:scale-95"
                         >
                             {page}
                         </button>
@@ -77,7 +77,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(currentPage() + 1)}
                     disabled={currentPage() === totalPages()}
-                    class="flex items-center justify-center w-24px h-16px rounded-8px"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-gray-200 text-gray-600 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-200 disabled:hover:text-gray-600 shadow-sm hover:shadow-md active:scale-95"
                     title="下一页"
                 >
                     &gt;
@@ -87,7 +87,7 @@ const Pagination: Component<PaginationProps> = (props) => {
                 <button
                     onClick={() => goToPage(totalPages())}
                     disabled={currentPage() === totalPages()}
-                    class="flex items-center justify-center w-24px h-16px rounded-8px"
+                    class="flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-gray-200 text-gray-600 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-200 disabled:hover:text-gray-600 shadow-sm hover:shadow-md active:scale-95"
                     title="最后一页"
                 >
                     &raquo;
