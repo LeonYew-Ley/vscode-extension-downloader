@@ -20,6 +20,8 @@ export default function App() {
   const [results, setResults] = createSignal<ExtensionItem[]>([]);
   const [currentPage, setCurrentPage] = createSignal(1);
   const [hasMore, setHasMore] = createSignal(true);
+  // 搜索模式状态：只有在执行搜索后才进入搜索模式
+  const [isInSearchMode, setIsInSearchMode] = createSignal(false);
   // 模态框属性
   const [isOpen, setIsOpen] = createSignal(false);
   const [currentItem, setCurrentItem] = createSignal<ExtensionItem | null>(null);
@@ -30,6 +32,17 @@ export default function App() {
     { name: "知乎", url: "https://zhuanlan.zhihu.com/p/26003070992", icon: "", isCustomIcon: true },
     { name: "Bilibili", url: "https://www.bilibili.com/video/BV1erTvzoEgn", icon: "fa-brands fa-bilibili", isCustomIcon: false },
   ];
+
+  // 返回首页：清空所有搜索相关状态
+  const returnToHome = () => {
+    setQuery('');
+    setResults([]);
+    setItemCount(0);
+    setCurrentPage(1);
+    setHasMore(true);
+    setIsInSearchMode(false);
+    setSearchParams('q', '', true);
+  };
 
   // 执行搜索（支持追加模式）
   const performSearch = async (append: boolean = false) => {
@@ -46,6 +59,7 @@ export default function App() {
       setCurrentPage(1);
       setResults([]);
       setHasMore(true);
+      setIsInSearchMode(true); // 进入搜索模式
     }
 
     try {
@@ -150,7 +164,11 @@ export default function App() {
     const queryParam = getSearchParams('q')
     if (queryParam) {
       setQuery(queryParam);
+      setIsInSearchMode(true);
       performSearch(false);
+    } else {
+      // 如果 URL 中没有查询参数，返回首页
+      returnToHome();
     }
   };
   handler();
@@ -166,21 +184,38 @@ export default function App() {
       {/* 顶部导航 */}
       <header class="sticky top-0 z-1 bg-white dark:bg-zinc-800 shadow-md flex justify-center items-center py-2 px-4 transition-colors">
         <div class='max-w-6xl flex justify-between items-center w-full gap-4'>
-          {/* Logo */}
-          {(query().length > 0 || results().length > 0) && (
-            <a id='title' href='/' class='relative h-full flex-shrink-0' data-text="vsc-extension-downloader">
+          {/* Logo - 在搜索模式时显示 */}
+          {isInSearchMode() && (
+            <a 
+              id='title' 
+              href='/' 
+              class='relative h-full flex-shrink-0' 
+              data-text="vsc-extension-downloader"
+              onClick={(e) => {
+                e.preventDefault();
+                returnToHome();
+              }}
+            >
               <img class='h-42px' src={logoUrl} alt="" />
             </a>
           )}
-          {query().length === 0 && results().length === 0 && <div></div>}
+          {!isInSearchMode() && <div></div>}
           
-          {/* 搜索框 - 有查询词或有结果时显示在顶部菜单栏 */}
-          {(query().length > 0 || results().length > 0) && (
+          {/* 搜索框 - 在搜索模式时显示在顶部菜单栏 */}
+          {isInSearchMode() && (
             <div class="flex-1 max-w-2xl mx-4">
               <SearchBox
                 query={query()}
-                onInput={setQuery}
+                onInput={(value) => {
+                  setQuery(value);
+                  // 输入时只更新状态，不改变搜索模式
+                }}
                 onSearch={() => {
+                  if (query().trim() === '') {
+                    // 如果查询为空，返回首页
+                    returnToHome();
+                    return;
+                  }
                   setSearchParams('q', query(), false);
                   performSearch(false);
                 }}
@@ -214,15 +249,21 @@ export default function App() {
 
       {/* 主要内容区 */}
       <main class={`flex-1 flex flex-col items-center px-4 pb-12 pt-6 ${results().length > 0 ? 'justify-start' : 'justify-center'}`}>
-        {/* 首页状态：无查询词且无搜索结果且不在搜索时，显示居中的Logo和搜索框 */}
-        {query().length === 0 && results().length === 0 && !isSearching() && (
+        {/* 首页状态：不在搜索模式时，显示居中的Logo和搜索框 */}
+        {!isInSearchMode() && (
           <div class="flex flex-col items-center justify-center gap-10 w-full max-w-2xl -mt-24">
             <img class="h-80px" src={logoUrl} alt="" />
             <div class="w-full">
               <SearchBox
                 query={query()}
-                onInput={setQuery}
+                onInput={(value) => {
+                  setQuery(value);
+                  // 输入时只更新状态，不执行搜索，不改变布局
+                }}
                 onSearch={() => {
+                  if (query().trim() === '') {
+                    return;
+                  }
                   setSearchParams('q', query(), false);
                   performSearch(false);
                 }}
@@ -231,15 +272,15 @@ export default function App() {
           </div>
         )}
 
-        {/* 搜索中状态：显示加载动画 */}
-        {isSearching() && results().length === 0 && (
+        {/* 搜索中状态：在搜索模式时显示加载动画 */}
+        {isInSearchMode() && isSearching() && results().length === 0 && (
           <div class="w-full max-w-6xl flex justify-center mt-8">
             <LoadingSpinner />
           </div>
         )}
 
-        {/* 无搜索结果状态：有查询词但无结果且不在搜索时，显示提示 */}
-        {query().length > 0 && results().length === 0 && !isSearching() && (
+        {/* 无搜索结果状态：在搜索模式但无结果且不在搜索时，显示提示 */}
+        {isInSearchMode() && results().length === 0 && !isSearching() && (
           <div class="flex flex-col items-center justify-center gap-6">
             <svg class="w-100px h-100px fill-gray-300 dark:fill-zinc-500" viewBox="0 0 1029 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
               <path d="M896 384zM896 384zM896 378.88c-5.12 0-5.12 0 0 0-5.12 0-5.12 0 0 0zM517.12 220.16c5.12 5.12 15.36 5.12 25.6 5.12 10.24-5.12 15.36-10.24 15.36-20.48l-5.12-107.52c0-10.24-10.24-20.48-25.6-20.48s-25.6 10.24-20.48 20.48l5.12 107.52c-5.12 10.24 0 15.36 5.12 15.36zM291.84 271.36c5.12 5.12 15.36 5.12 20.48 5.12 5.12 0 15.36-10.24 15.36-15.36 0-10.24 0-15.36-5.12-20.48l-81.92-76.8c-5.12-5.12-15.36-5.12-20.48-5.12-5.12 0-15.36 10.24-15.36 15.36 0 10.24 0 15.36 5.12 20.48l81.92 76.8zM890.88 378.88zM727.04 250.88c5.12 0 10.24-5.12 15.36-5.12l81.92-81.92c5.12-5.12 5.12-10.24 5.12-15.36 0-5.12-5.12-10.24-5.12-15.36-10.24-10.24-25.6-10.24-30.72 0l-81.92 81.92c-5.12 5.12-5.12 10.24-5.12 15.36 0 5.12 5.12 10.24 5.12 15.36 5.12 5.12 10.24 5.12 15.36 5.12zM885.76 368.64zM885.76 368.64zM896 389.12c0-5.12 0-5.12 0 0 0-5.12 0-5.12 0 0-10.24-15.36-30.72-35.84-56.32-35.84h-650.24c-25.6 0-40.96 10.24-56.32 35.84-15.36 20.48-133.12 204.8-133.12 240.64v245.76c0 40.96 30.72 71.68 71.68 71.68h880.64c40.96 0 71.68-30.72 71.68-71.68v-245.76c5.12-40.96-107.52-215.04-128-240.64z m-245.76 235.52c-15.36 0-30.72 10.24-35.84 25.6v5.12c0 61.44-51.2 117.76-112.64 117.76-61.44 0-112.64-51.2-112.64-117.76v-5.12c-10.24-25.6-30.72-25.6-30.72-25.6h-302.08l102.4-189.44s20.48-35.84 46.08-30.72h609.28c20.48 0 25.6 10.24 40.96 30.72l102.4 189.44h-307.2zM890.88 373.76zM890.88 378.88s0-5.12 0 0zM890.88 373.76zM890.88 373.76z"></path>
@@ -248,8 +289,8 @@ export default function App() {
           </div>
         )}
 
-        {/* 搜索结果状态：有结果时，显示搜索结果列表 */}
-        {results().length > 0 && (
+        {/* 搜索结果状态：在搜索模式且有结果时，显示搜索结果列表 */}
+        {isInSearchMode() && results().length > 0 && (
           <div class="w-full max-w-6xl mt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <For each={results()}>
               {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
@@ -258,7 +299,7 @@ export default function App() {
         )}
         
         {/* 加载更多动画 */}
-        {isLoadingMore() && (
+        {isInSearchMode() && isLoadingMore() && (
           <div class="w-full max-w-6xl mt-8 flex justify-center">
             <LoadingSpinner />
           </div>
