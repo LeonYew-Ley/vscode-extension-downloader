@@ -68,6 +68,13 @@ const ResultCard: Component<ResultCardProps> = (props) => {
 
   const roundedRating = getRoundedRating();
 
+  // 生成 VSCode 市场页面 URL
+  const getMarketplaceUrl = () => {
+    const publisherName = props.item.publisher.publisherName;
+    const extensionName = props.item.extensionName;
+    return `https://marketplace.visualstudio.com/items?itemName=${publisherName}.${extensionName}`;
+  };
+
   // 生成星级显示
   const renderStars = () => {
     const stars = [];
@@ -101,7 +108,17 @@ const ResultCard: Component<ResultCardProps> = (props) => {
         <img class='h-72px' src={props.item.versions[0].files[1]?.source || 'https://marketplace.visualstudio.com/_static/tfs/M257_20250527.11/_content/Header/default_icon.png'} alt="" />
       </div>
       <div class="ml-4 flex-1">
-        <h3 class="font-semibold text-lg">{props.item.displayName}</h3>
+        <a 
+          href={getMarketplaceUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-semibold text-lg text-black no-underline hover:underline hover:decoration-black cursor-pointer inline-block"
+          style={{ textDecoration: 'none' }}
+          onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+          onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+        >
+          {props.item.displayName}
+        </a>
         <div class="flex items-center justify-between">
           <p class="flex-1 text-gray-500 text-sm">{props.item.publisher.displayName}</p>
           <button
