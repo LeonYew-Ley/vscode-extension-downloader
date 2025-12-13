@@ -127,78 +127,71 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-xl w-full max-w-2xl transition-colors">
                         {/* 头部 - 标题和关闭按钮 */}
-                        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-zinc-700">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">请选择版本</h3>
+                        <div class="flex justify-between items-start py-2 px-4 border-b border-gray-200 dark:border-zinc-700">
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-0 mt-1">请选择版本</h3>
+                                <p class="text-sm text-gray-500 dark:text-zinc-400 mt-1 mb-0">{props.item.displayName}</p>
+                            </div>
                             <button
                                 onClick={handleClose}
-                                class="text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition-colors"
+                                class="text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition-colorsborder-none outline-none bg-transparent cursor-pointer mt-1"
+                                style={{ 'box-shadow': 'none', 'border': 'none', 'padding': '0'}}
                             >
-                                ✕
+                                <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+                                    <path d="M810.666667 273.493333L750.506667 213.333333 512 451.84 273.493333 213.333333 213.333333 273.493333 451.84 512 213.333333 750.506667 273.493333 810.666667 512 572.16 750.506667 810.666667 810.666667 750.506667 572.16 512z"></path>
+                                </svg>
                             </button>
                         </div>
 
                         {/* 主体内容 */}
                         <div class="relative p-4 grid gap-2">
-                            {/* 输入框 */}
-                            <div class="flex items-center border border-gray-300 dark:border-zinc-600 rounded">
+                            {/* 搜索和选择区域 */}
+                            <div class="relative">
                                 <input
                                     type="text"
                                     value={selectedVersion() ? versionDisplayMap(selectedVersion()!) : inputValue()}
                                     onInput={(e) => {
                                         setInputValue(e.currentTarget.value);
-                                        // setSelectedVersion(e.currentTarget.value);
                                         setIsDropdownOpen(true);
                                     }}
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen())}
-                                    placeholder="搜索或选择..."
-                                    class="flex-1 p-2 outline-none bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-500 dark:placeholder-gray-400"
+                                    placeholder="搜索或选择插件版本"
+                                    class="w-full p-8px outline-none bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-zinc-600 rounded-md box-border"
                                 />
-                                <button
-                                    onClick={() => {
-                                        setDownloadTarget({
-                                            ...downloadTarget(),
-                                            version: selectedVersion()?.version,
-                                        })
-                                        handleDownload()
-                                    }}
-                                    class="h-36px px-2 text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition-colors"
-                                >
-                                    下载
-                                </button>
                                 {/* 下拉选项 */}
-
-                            </div>
-                            <div class={`${isDropdownOpen() ? '' : 'hidden'} mt-1 w-full bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded shadow-lg max-h-60 overflow-auto`}>
-                                {filteredOptions().length > 0 ? (
-                                    filteredOptions().map(option => (
-                                        <div
-                                            onClick={() => {
-                                                setSelectedVersion(option);
-                                                if (option.targetPlatform) {
-                                                    setDownloadTarget({
-                                                        ...downloadTarget(),
-                                                        targetPlatform: option.targetPlatform
-                                                    })
-                                                }
-                                                setInputValue("");
-                                                setIsDropdownOpen(false);
-                                            }}
-                                            class="p-2 hover:bg-gray-100 dark:hover:bg-zinc-600 cursor-pointer text-gray-900 dark:text-zinc-100 transition-colors"
-                                        >
-                                            {versionDisplayMap(option)}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div class="p-2 text-gray-500 dark:text-zinc-400">无匹配结果</div>
-                                )}
+                                <div class={`${isDropdownOpen() ? '' : 'hidden'} absolute top-full left-0 right-0 bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded shadow-lg max-h-60 overflow-auto z-10`}>
+                                    {filteredOptions().length > 0 ? (
+                                        filteredOptions().map(option => (
+                                            <div
+                                                onClick={() => {
+                                                    setSelectedVersion(option);
+                                                    if (option.targetPlatform) {
+                                                        setDownloadTarget({
+                                                            ...downloadTarget(),
+                                                            targetPlatform: option.targetPlatform
+                                                        })
+                                                    }
+                                                    setInputValue("");
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                class="p-8px hover:bg-gray-100 dark:hover:bg-zinc-600 cursor-pointer text-gray-900 dark:text-zinc-100 transition-colors text-xs"
+                                            >
+                                                {versionDisplayMap(option)}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div class="w-full p-8px bg-white dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 border-0 box-border text-xs">无匹配结果</div>
+                                    )}
+                                </div>
                             </div>
                             <Show when={props.item.versions.length > 1}>
-                                <select class='w-full p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md' value={downloadTarget()?.targetPlatform} onChange={e => {
+                                <select class='w-full p-8px bg-white dark:bg-zinc-700 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded-md box-border' value={downloadTarget()?.targetPlatform || ''} onChange={e => {
                                     setDownloadTarget({
                                         ...downloadTarget(),
-                                        targetPlatform: e.target.value
+                                        targetPlatform: e.target.value || undefined
                                     })
                                 }}>
+                                    <option value="">选择插件平台/架构</option>
                                     {props.item?.versions.map(item => {
                                         return (
                                             <option class="p-2" value={item.targetPlatform}>{item.targetPlatform}</option>
@@ -213,15 +206,23 @@ export default function VersionModal(props: { item: ExtensionItem, isOpen: boole
                         <div class="flex justify-end p-4 border-t border-gray-200 dark:border-zinc-700 gap-2">
                             <button
                                 onClick={handleClose}
-                                class="px-4 py-2 border border-gray-300 dark:border-zinc-600 rounded hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-200 transition-colors"
+                                class="bg-white dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors border-none outline-none shadow-none"
+                                style={{ 'box-shadow': 'none', 'border': 'none' }}
                             >
                                 取消
                             </button>
                             <button
-                                onClick={handleClose}
-                                class="px-4 py-2 bg-blue-500 dark:bg-blue-700 text-white rounded hover:bg-blue-600 dark:hover:bg-blue-800 transition-colors"
+                                onClick={() => {
+                                    setDownloadTarget({
+                                        ...downloadTarget(),
+                                        version: selectedVersion()?.version,
+                                    })
+                                    handleDownload()
+                                }}
+                                class="bg-blue-600 dark:bg-blue-700 text-white py-8px px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors border-none outline-none shadow-none"
+                                style={{ 'box-shadow': 'none', 'border': 'none' }}
                             >
-                                关闭
+                                下载
                             </button>
                         </div>
                     </div>

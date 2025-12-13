@@ -86,3 +86,45 @@ input[type="search"]:focus-visible {
     -webkit-mask-position: center;
     vertical-align: middle;
 }
+
+/* 滚动条样式 - 浅色模式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* 滚动条样式 - 深色模式 */
+.dark ::-webkit-scrollbar-track {
+    background: #27272a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #52525b;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #71717a;
+}
+
+/* Firefox 滚动条样式 */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.dark * {
+    scrollbar-color: #52525b #27272a;
+}
