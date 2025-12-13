@@ -143,14 +143,16 @@ const ResultCard: Component<ResultCardProps> = (props) => {
           {/* 历史版本按钮 */}
           <button
             onClick={() => handleVersion()}
-            class="bg-white dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors border border-gray-300 dark:border-zinc-600"
+            class="bg-white dark:bg-zinc-700 text-gray-700 dark:text-zinc-200 py-8px px-4 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors border-none outline-none shadow-none"
+            style={{ 'box-shadow': 'none', 'border': 'none' }}
           >
             历史版本
           </button>
           {/* 下载按钮 */}
           <button
             onClick={() => handleDownload(props.item)}
-            class="bg-blue-600 dark:bg-blue-700 text-white py-8px px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors border-none"
+            class="bg-blue-600 dark:bg-blue-700 text-white py-8px px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors border-none outline-none shadow-none"
+            style={{ 'box-shadow': 'none', 'border': 'none' }}
           >
             下载
           </button>

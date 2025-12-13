@@ -54,6 +54,16 @@ input[type="search"] {
     box-shadow: none;
 }
 
+/* 移除按钮的3D边框效果和光影效果 */
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-image: none;
+    box-shadow: none !important;
+    outline: none;
+}
+
 /* 移除搜索框聚焦时的外边框，只保留边框颜色变化 */
 input[type="text"]:focus-visible,
 input[type="search"]:focus-visible {
