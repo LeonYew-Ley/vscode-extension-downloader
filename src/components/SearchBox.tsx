@@ -37,7 +37,8 @@ const SearchBox: Component<SearchBoxProps> = (props) => {
       />
       <button
         onClick={props.onSearch}
-        class="absolute h-80% right-1 top-50% -translate-y-1/2 w-100px right-0 bg-blue-600 dark:bg-blue-700 text-white px-4 py-1 rounded-none border-0 hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
+        class="absolute h-80% right-1 top-50% -translate-y-1/2 w-100px right-0 bg-blue-600 dark:bg-blue-700 text-white px-4 py-1 rounded-none border-0 hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors outline-none shadow-none"
+        style={{ 'box-shadow': 'none', 'border': 'none' }}
       >
         搜索(Enter)
       </button>
