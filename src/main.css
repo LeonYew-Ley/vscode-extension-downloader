@@ -10,3 +10,15 @@ body {
         transform: rotate(360deg);
     }
 }
+
+/* 移除输入框的3D边框效果，确保纯色边框 */
+input[type="text"],
+input[type="search"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-style: solid;
+    border-width: 1px;
+    border-image: none;
+    box-shadow: none;
+}

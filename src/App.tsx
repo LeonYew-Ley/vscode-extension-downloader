@@ -26,9 +26,9 @@ export default function App() {
   const [getSearchParams, setSearchParams] = useQueryParameters();
   // 顶部导航链接
   const navLinks = [
-    { name: "GitHub", url: "https://github.com/OldSaltFish/vscode-extension-downloader" },
-    { name: "知乎(顶部评论)", url: "https://zhuanlan.zhihu.com/p/26003070992" },
-    { name: "Bilibili", url: "https://www.bilibili.com/video/BV1erTvzoEgn" },
+    { name: "GitHub", url: "https://github.com/OldSaltFish/vscode-extension-downloader", icon: "fa-brands fa-github", isCustomIcon: false },
+    { name: "知乎", url: "https://zhuanlan.zhihu.com/p/26003070992", icon: "", isCustomIcon: true },
+    { name: "Bilibili", url: "https://www.bilibili.com/video/BV1erTvzoEgn", icon: "fa-brands fa-bilibili", isCustomIcon: false },
   ];
 
   // 执行搜索（支持追加模式）
@@ -166,17 +166,28 @@ export default function App() {
       {/* 顶部导航 */}
       <header class="sticky top-0 z-1 bg-white shadow-sm flex justify-center items-center">
         <div class='max-w-6xl flex justify-between items-center w-full'>
-          <a id='title' href='/' class='relative h-full' data-text="vsc-extension-downloader">
-            <img class='h-42px' src={logoUrl} alt="" />
-          </a>
-          <div class="relative flex py-2">
+          {results().length > 0 && (
+            <a id='title' href='/' class='relative h-full' data-text="vsc-extension-downloader">
+              <img class='h-42px' src={logoUrl} alt="" />
+            </a>
+          )}
+          {results().length === 0 && <div></div>}
+          <div class="relative flex items-center gap-1 py-2">
             {navLinks.map(link => (
               <a
                 href={link.url}
                 target="_blank"
-                class="py-2 px-2 text-black hover:text-blue-600 hover:bg-blue-300 bg-blue-200 transition-colors no-underline"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center w-12 h-12 text-gray-700 hover:text-blue-600 hover:bg-blue-100 rounded-lg transition-colors no-underline"
+                title={link.name}
               >
-                {link.name}
+                {link.isCustomIcon && link.name === "知乎" ? (
+                  <svg class="w-7 h-7" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                    <path d="M 940.35 795.875 c 0 78.652 -63.771 142.422 -142.421 142.422 H 228.226 c -78.655 0 -142.427 -63.772 -142.427 -142.422 v -569.7 c 0 -78.658 63.772 -142.432 142.427 -142.432 H 797.93 c 78.658 0 142.432 63.772 142.432 142.431 l -0.01 569.701 Z M 415.621 543.356 h 125.593 c 0 -29.528 -13.923 -46.824 -13.923 -46.824 H 418.295 c 2.59 -53.493 4.91 -122.15 5.739 -147.65 h 103.677 s -0.561 -43.871 -12.091 -43.871 H 333.378 s 10.971 -57.374 25.594 -82.7 c 0 0 -54.417 -2.938 -72.98 69.622 c -18.562 72.56 -46.404 116.43 -49.356 124.446 c -2.953 8.013 16.031 3.795 24.044 0 c 8.015 -3.797 44.294 -16.876 54.84 -67.496 h 56.35 c 0.76 32.082 2.99 130.397 2.287 147.649 H 258.15 c -16.45 11.81 -21.936 46.824 -21.936 46.824 h 132.592 c -5.53 36.615 -15.239 83.813 -28.817 108.835 c -21.513 39.655 -32.904 75.934 -110.525 138.368 c 0 0 -12.657 9.28 26.576 5.906 c 39.231 -3.372 76.356 -13.498 102.087 -64.963 c 13.378 -26.756 27.213 -60.697 38.006 -95.121 l -0.04 0.12 l 109.26 125.795 s 14.343 -33.747 3.798 -70.87 l -80.994 -90.698 l -27.42 20.279 l -0.031 0.099 c 7.615 -26.7 13.092 -53.095 14.795 -76.061 c 0.042 -0.553 0.084 -1.119 0.121 -1.689 Z M 567.366 295.73 v 435.35 h 45.77 l 18.753 52.405 l 79.328 -52.405 h 99.978 V 295.73 H 567.366 Z M 764.09 684.253 h -51.968 l -64.817 42.817 l -15.319 -42.817 H 615.81 v -339.94 h 148.28 v 339.94 Z m 0 0"></path>
+                  </svg>
+                ) : (
+                  <i class={`${link.icon} text-xl`}></i>
+                )}
               </a>
             ))}
             {isSearching() && <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  text-sm text-gray-500">搜索中...</div>}
@@ -187,25 +198,44 @@ export default function App() {
 
       {/* 主要内容区 */}
       <main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div class="sticky z-1 top-72px w-full max-w-2xl transition-all duration-300">
-          <SearchBox
-            query={query()}
-            onInput={setQuery}
-            onSearch={() => {
-              setSearchParams('q', query(), false);
-              performSearch(false);
-            }}
-          />
-
-        </div>
-
-        {/* 搜索结果列表 */}
-        {results().length > 0 && (
-          <div class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <For each={results()}>
-              {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
-            </For>
+        {/* 首页状态：无搜索结果时，显示居中的Logo和搜索框 */}
+        {results().length === 0 && !isSearching() && (
+          <div class="flex flex-col items-center justify-center gap-10 w-full max-w-2xl -mt-24">
+            <img class="h-80px" src={logoUrl} alt="" />
+            <div class="w-full">
+              <SearchBox
+                query={query()}
+                onInput={setQuery}
+                onSearch={() => {
+                  setSearchParams('q', query(), false);
+                  performSearch(false);
+                }}
+              />
+            </div>
           </div>
+        )}
+
+        {/* 搜索结果状态：有结果时，搜索框固定在顶部 */}
+        {results().length > 0 && (
+          <>
+            <div class="sticky z-1 top-72px w-full max-w-2xl transition-all duration-300">
+              <SearchBox
+                query={query()}
+                onInput={setQuery}
+                onSearch={() => {
+                  setSearchParams('q', query(), false);
+                  performSearch(false);
+                }}
+              />
+            </div>
+
+            {/* 搜索结果列表 */}
+            <div class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <For each={results()}>
+                {(item) => <ResultCard item={item} setCurrentItem={setCurrentItem} setIsOpen={setIsOpen} />}
+              </For>
+            </div>
+          </>
         )}
         
         {/* 加载动画 */}
@@ -219,11 +249,13 @@ export default function App() {
       {/* 底部信息 */}
       <footer class="bg-white py-6 px-4 border-t border-gray-200">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div class="text-gray-500 text-sm">
-            © 2025 vscode插件在线下载.
+          <div class="text-gray-500 text-sm flex items-center gap-1">
+            <i class="fa-regular fa-copyright"></i>
+            2025 VSCode 插件在线下载
           </div>
           <div class="mt-4 md:mt-0">
-            <a href="mailto:dreamsoul23@qq.com" class="text-blue-600 hover:text-blue-800">
+            <a href="mailto:dreamsoul23@qq.com" class="text-gray-700 hover:text-gray-900 no-underline hover:underline flex items-center gap-2">
+              <i class="fa-regular fa-envelope"></i>
               dreamsoul23@qq.com
             </a>
           </div>
