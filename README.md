@@ -46,9 +46,6 @@ pnpm build
 ```shell
 # 主分支开发好后，执行构建
 pnpm build
-
-# 需要手动修改 dist/index.html 中的标题为 `vsc插件下载`
-
 # 切换到 product 分支
 git switch product
 
@@ -58,7 +55,7 @@ mv dist/* .
 
 # 后续推送到远程
 git add .
-git commit -m "chore: 发布新版本"
+git commit -m "update: 发布新版本"
 git push origin product
 ```
 
