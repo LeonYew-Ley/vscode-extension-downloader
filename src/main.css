@@ -1,3 +1,4 @@
+@unocss;
 html {
     /* 始终保留滚动条占位空间，防止内容宽度变化 */
     scrollbar-gutter: stable;
