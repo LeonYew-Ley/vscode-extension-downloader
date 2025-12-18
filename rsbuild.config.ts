@@ -19,9 +19,6 @@ export default defineConfig({
       plugins: [
         UnoCSSRspackPlugin({
           presets: [presetWind3()],
-          theme: {
-            darkMode: 'class',
-          },
         }),
       ],
     },

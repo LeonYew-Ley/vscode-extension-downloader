@@ -5,8 +5,20 @@ import App from './App';
 
 // 初始化深色模式（在渲染前应用，避免闪烁）
 const initTheme = () => {
-  // 直接检测浏览器主题
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  // 优先使用用户保存的设置，否则跟随系统主题
+  const stored = localStorage.getItem('theme-preference');
+  let shouldBeDark = false;
+  
+  if (stored === 'light') {
+    shouldBeDark = false;
+  } else if (stored === 'dark') {
+    shouldBeDark = true;
+  } else {
+    // 未设置，使用系统主题
+    shouldBeDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  
+  if (shouldBeDark) {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
