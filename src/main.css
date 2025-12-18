@@ -1,3 +1,158 @@
+html {
+    /* 始终保留滚动条占位空间，防止内容宽度变化 */
+    scrollbar-gutter: stable;
+}
+
 body {
     margin: 0;
+    /* 备用方案：如果浏览器不支持 scrollbar-gutter，使用 overflow-y: scroll */
+    overflow-y: scroll;
+}
+
+/* 覆盖 UnoCSS 默认的蓝色 ring 颜色，改为灰色系 */
+:root {
+    --un-ring-color: rgb(166, 166, 166); /* gray-400 */
+}
+
+.dark {
+    --un-ring-color: rgb(109, 109, 109); /* gray-500 */
+}
+
+/* 移除所有元素的默认 focus ring（如果需要完全去掉蓝色） */
+*:focus {
+    outline: none;
+}
+
+/* 或者使用灰色系的 focus ring */
+*:focus-visible {
+    outline: 2px solid rgb(156, 163, 175);
+    outline-offset: 2px;
+}
+
+.dark *:focus-visible {
+    outline-color: rgb(107, 114, 128);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 移除输入框的3D边框效果，确保纯色边框 */
+input[type="text"],
+input[type="search"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-style: solid;
+    border-width: 1px;
+    border-image: none;
+    box-shadow: none;
+}
+
+/* 移除按钮的3D边框效果和光影效果 */
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-image: none;
+    box-shadow: none !important;
+    outline: none;
+}
+
+/* 移除搜索框聚焦时的外边框，只保留边框颜色变化 */
+input[type="text"]:focus-visible,
+input[type="search"]:focus-visible {
+    outline: none;
+}
+
+/* 下载图标样式 */
+.bowtie-icon.bowtie-install.install-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: currentColor;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M863.2 315.8c-0.2-1.4-0.4-2.6-0.8-4-1.5-5.5-3.9-10.6-7.8-14.5l-128-128c-6-6-14.1-9.4-22.6-9.4L320 159.9c-8.5 0-16.6 3.4-22.6 9.4l-128 128c-3.9 3.9-6.3 9-7.8 14.5-0.4 1.4-0.6 2.6-0.8 4-0.2 1.4-0.8 2.7-0.8 4.2l0 451.8c0 50.8 41.4 92.2 92.2 92.2l519.5 0c50.9 0 92.2-41.4 92.2-92.2L863.9 320C864 318.5 863.4 317.3 863.2 315.8zM333.2 224l357.5 0 64 64L269.2 288 333.2 224zM800 771.8c0 15.6-12.7 28.2-28.2 28.2L252.2 800c-15.6 0-28.2-12.7-28.2-28.2L224 352l576 0L800 771.8z' fill='%23000'/%3E%3Cpath d='M489.4 726.6c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4l76.8-76.8c12.5-12.5 12.5-32.8 0-45.2s-32.8-12.5-45.2 0L544 626.8 544 448c0-17.7-14.3-32-32-32-17.7 0-32 14.3-32 32l0 178.8-22.2-22.2c-12.5-12.5-32.8-12.5-45.2 0s-12.5 32.8 0 45.2L489.4 726.6z' fill='%23000'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M863.2 315.8c-0.2-1.4-0.4-2.6-0.8-4-1.5-5.5-3.9-10.6-7.8-14.5l-128-128c-6-6-14.1-9.4-22.6-9.4L320 159.9c-8.5 0-16.6 3.4-22.6 9.4l-128 128c-3.9 3.9-6.3 9-7.8 14.5-0.4 1.4-0.6 2.6-0.8 4-0.2 1.4-0.8 2.7-0.8 4.2l0 451.8c0 50.8 41.4 92.2 92.2 92.2l519.5 0c50.9 0 92.2-41.4 92.2-92.2L863.9 320C864 318.5 863.4 317.3 863.2 315.8zM333.2 224l357.5 0 64 64L269.2 288 333.2 224zM800 771.8c0 15.6-12.7 28.2-28.2 28.2L252.2 800c-15.6 0-28.2-12.7-28.2-28.2L224 352l576 0L800 771.8z' fill='%23000'/%3E%3Cpath d='M489.4 726.6c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4l76.8-76.8c12.5-12.5 12.5-32.8 0-45.2s-32.8-12.5-45.2 0L544 626.8 544 448c0-17.7-14.3-32-32-32-17.7 0-32 14.3-32 32l0 178.8-22.2-22.2c-12.5-12.5-32.8-12.5-45.2 0s-12.5 32.8 0 45.2L489.4 726.6z' fill='%23000'/%3E%3C/svg%3E");
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    vertical-align: middle;
+}
+
+/* 滚动条样式 - 浅色模式（默认） */
+html ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+html ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+html ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+html ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* 滚动条样式 - 深色模式 */
+html.dark::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+html.dark::-webkit-scrollbar-track {
+    background: #18181b !important;
+}
+
+html.dark::-webkit-scrollbar-thumb {
+    background: #3f3f46 !important;
+    border-radius: 4px;
+}
+
+html.dark::-webkit-scrollbar-thumb:hover {
+    background: #52525b !important;
+}
+
+/* 也针对 body 元素设置（某些情况下滚动条在 body 上） */
+body ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+html.dark body ::-webkit-scrollbar-track {
+    background: #18181b !important;
+}
+
+html.dark body ::-webkit-scrollbar-thumb {
+    background: #3f3f46 !important;
+}
+
+html.dark body ::-webkit-scrollbar-thumb:hover {
+    background: #52525b !important;
+}
+
+/* Firefox 滚动条样式 */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+}
+
+html.dark {
+    scrollbar-color: #3f3f46 #18181b !important;
 }

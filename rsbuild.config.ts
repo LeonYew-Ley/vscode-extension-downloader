@@ -18,7 +18,7 @@ export default defineConfig({
     rspack: {
       plugins: [
         UnoCSSRspackPlugin({
-          presets: [presetWind3(),],
+          presets: [presetWind3()],
         }),
       ],
     },
