@@ -104,7 +104,9 @@ const ResultCard: Component<ResultCardProps> = (props) => {
     <div class="p-4 flex bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-zinc-700 hover:shadow-lg transition-shadow">
       {/* Logo 和评分下载量区域 */}
       <div class="flex-shrink-0 mr-4 flex flex-col items-center">
-        <img class='h-72px' src={props.item.versions[0].files[1]?.source || 'https://cdn.vsassets.io/v/M266_20251205.4/_content/Header/default_icon.png'} alt="" />
+        <div class="w-72px h-72px flex items-center justify-center">
+          <img class='w-72px h-72px object-contain' src={props.item.versions[0].files[1]?.source || 'https://cdn.vsassets.io/v/M266_20251205.4/_content/Header/default_icon.png'} alt="" />
+        </div>
         {/* 评分和下载量 */}
         <div class="mt-2 flex flex-col items-center gap-1">
           <span class="text-yellow-500 flex items-center">
