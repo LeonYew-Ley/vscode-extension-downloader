@@ -62,9 +62,10 @@ export function useQueryParameters(): [
       newParams.set(key, value);
     }
 
-    const newUrl = `${window.location.pathname}?${newParams.toString()}${
-      window.location.hash
-    }`;
+    const hasParams = newParams.toString().length > 0;
+    const newUrl = hasParams 
+      ? `${window.location.pathname}?${newParams.toString()}${window.location.hash}`
+      : `${window.location.pathname}${window.location.hash}`;
 
     if (replace) {
       // 使用 replaceState 不会创建新的历史记录
